@@ -1,3 +1,5 @@
+'use client'
+
 import styles from "../../app/page.module.css"
 import {
   Table,
@@ -17,9 +19,38 @@ import {
     PaginationPrevious,
   } from "@/components/ui/pagination"
   
-import Lawyer from './lawyer'
+import LawyerRow from './lawyerrow'
+import { Lawyer } from "@/types/lawyer"
 
-export default function Lawyers(){
+function ContactInformation(props: any){
+    return(
+        <div className="flex flex-col">
+            <p>Email{props.contact.email}</p>
+            <p>Phone: {props.contact.phoneNumber}</p>
+            <p>Fax: {props.contact.fax}</p>
+            <p>Address: {props.contact.address + ", " + props.contact.city + ", " + props.contact.province + " " + props.contact.postalCode}</p>
+        </div>
+    )
+}
+
+export default function Lawyers(props: any){
+
+    console.log("lawyers!")
+
+    const lawyers = props.data.map((lawyer: Lawyer, index: number) => {
+
+        let contactInfo = <ContactInformation contact={lawyer.contact} />
+
+        return <LawyerRow 
+            firstName={lawyer.firstName}
+            lastName={lawyer.lastName}
+            firm={lawyer.firm}
+            contact={contactInfo}
+            status={lawyer.status}
+            history={lawyer.history}>
+        </LawyerRow>
+    })
+
     return(
     <div>
         <Table className={styles.table}>
@@ -34,8 +65,9 @@ export default function Lawyers(){
             </TableRow>
           </TableHeader>
           <TableBody>
-            <Lawyer firstName="Greg" lastName="Evans" firm="Evans Pollock Family Law" contact="Please don't" status="Practising" history="Lots"/>
-            <Lawyer firstName="Richard" lastName="Pollock" firm="Evans Pollock Family Law" contact="" status="Practising" history="Not as much as Greg"/>
+            {lawyers}
+            {/* <LawyerRow firstName="Gregory" lastName="Evans" firm="Evans Pollock Family Law" contact="Please don't" status="Practising" history="Lots"/>
+            <LawyerRow firstName="Richard" lastName="Pollock" firm="Evans Pollock Family Law" contact="" status="Practising" history="Not as much as Greg"/> */}
           </TableBody>
         </Table>
         <Pagination>

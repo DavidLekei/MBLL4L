@@ -4,11 +4,13 @@ import {
     Button
 } from '@/components/ui/button'
 
+import About from './about'
 import LoginSheet from './loginsheet'
   
   
 export default function Navbar(props: any){
 
+    const aboutButton = <Button variant="ghost">About</Button>
     const logInButton = <Button>Log In</Button>
 
     return(
@@ -17,7 +19,8 @@ export default function Navbar(props: any){
                 Manitoba Lawyer Lookup - For Lawyers
             </h1>
             <div className="flex flex-row">
-                <Button variant="ghost">About</Button>
+                <Button>API</Button>
+                <About trigger={aboutButton} />
                 <Button>Sign Up</Button>
                 <LoginSheet trigger={logInButton} />
             </div>

@@ -5,7 +5,7 @@ import {
     TableRow,
   } from "@/components/ui/table"
 
-export default function Lawyer(props: any){
+export default function LawyerRow(props: any){
     return(
         <TableRow className={styles.tableRow}>
             <TableCell>{props.firstName}</TableCell>
