@@ -2,8 +2,6 @@ import styles from "../../app/page.module.css"
 import {
   Table,
   TableBody,
-  TableCaption,
-  TableCell,
   TableHead,
   TableHeader,
   TableRow,
@@ -19,26 +17,25 @@ import {
     PaginationPrevious,
   } from "@/components/ui/pagination"
   
+import Lawyer from './lawyer'
 
 export default function Lawyers(){
     return(
-    <div className={'table-container'}>
+    <div>
         <Table className={styles.table}>
           <TableHeader >
-            <TableRow className={styles.tableRow}>
-              <TableHead className="w-[100px]">Invoice</TableHead>
+            <TableRow>
+              <TableHead>Last Name</TableHead>
+              <TableHead>First Name</TableHead>
+              <TableHead>Firm</TableHead>
+              <TableHead>Contact</TableHead>
               <TableHead>Status</TableHead>
-              <TableHead>Method</TableHead>
-              <TableHead className="text-right">Amount</TableHead>
+              <TableHead>History</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
-            <TableRow className={styles.tableRow}>
-              <TableCell className="font-medium">INV001</TableCell>
-              <TableCell>Paid</TableCell>
-              <TableCell>Credit Card</TableCell>
-              <TableCell className="text-right">$250.00</TableCell>
-            </TableRow>
+            <Lawyer firstName="Greg" lastName="Evans" firm="Evans Pollock Family Law" contact="Please don't" status="Practising" history="Lots"/>
+            <Lawyer firstName="Richard" lastName="Pollock" firm="Evans Pollock Family Law" contact="" status="Practising" history="Not as much as Greg"/>
           </TableBody>
         </Table>
         <Pagination>
