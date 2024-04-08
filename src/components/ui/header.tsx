@@ -8,7 +8,7 @@ export default function Header(props:any){
     }
 
     return(
-    <div className="header container">
+    <div className="w-full">
         <div id="button-container" className="flex flex-row justify-between mb-10">
             <div className="flex flex-row">
                 <Input id="search-input" className="col-span-3 rounded-lg" type="text" placeholder="Name, City, Postal Code..."/>

@@ -113,6 +113,12 @@ a {
   }
 }
 
+.app-margins{
+  margin-left: 6rem;
+  margin-right: 6rem;
+}
+
+
 ::placeholder{
   opacity: 0.5;
 }

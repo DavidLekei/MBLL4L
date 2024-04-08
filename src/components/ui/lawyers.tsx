@@ -41,6 +41,10 @@ export default function Lawyers(props: any){
 
         let contactInfo = <ContactInformation contact={lawyer.contact} />
 
+      if(props.filter){
+        
+      }
+
         return <LawyerRow 
             firstName={lawyer.firstName}
             lastName={lawyer.lastName}

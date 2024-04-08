@@ -10,7 +10,7 @@ export default function Home() {
   const data = getLawyers();
 
   return (
-    <div className="">
+    <div className="app-margins">
       <Navbar />
       <main className={styles.main}>
         <Header />
