@@ -25,7 +25,7 @@ import { Lawyer } from "@/types/lawyer"
 function ContactInformation(props: any){
     return(
         <div className="flex flex-col">
-            <p>Email{props.contact.email}</p>
+            <p>Email: {props.contact.email}</p>
             <p>Phone: {props.contact.phoneNumber}</p>
             <p>Fax: {props.contact.fax}</p>
             <p>Address: {props.contact.address + ", " + props.contact.city + ", " + props.contact.province + " " + props.contact.postalCode}</p>
