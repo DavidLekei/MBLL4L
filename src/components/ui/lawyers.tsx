@@ -56,12 +56,12 @@ export default function Lawyers(props: any){
         <Table className={styles.table}>
           <TableHeader >
             <TableRow>
-              <TableHead>Last Name</TableHead>
-              <TableHead>First Name</TableHead>
-              <TableHead>Firm</TableHead>
-              <TableHead>Contact</TableHead>
-              <TableHead>Status</TableHead>
-              <TableHead>History</TableHead>
+              <TableHead className="font-bold">Last Name</TableHead>
+              <TableHead className="font-bold">First Name</TableHead>
+              <TableHead className="font-bold">Firm</TableHead>
+              <TableHead className="font-bold">Contact</TableHead>
+              <TableHead className="font-bold">Status</TableHead>
+              <TableHead className="font-bold">History</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
