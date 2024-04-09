@@ -8,8 +8,8 @@ import {
 export default function LawyerRow(props: any){
     return(
         <TableRow className={styles.tableRow}>
-            <TableCell>{props.firstName}</TableCell>
             <TableCell>{props.lastName}</TableCell>
+            <TableCell>{props.firstName}</TableCell>
             <TableCell>{props.firm}</TableCell>
             <TableCell>{props.contact}</TableCell>
             <TableCell>{props.status}</TableCell>

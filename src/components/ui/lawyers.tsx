@@ -45,8 +45,6 @@ export default function Lawyers(props: any){
       }, []
     )
 
-    console.log('data: ', data)
-
     if(!data){
       return(
         <div>
@@ -57,11 +55,24 @@ export default function Lawyers(props: any){
 
     const lawyers = data.map((lawyer: Lawyer, index: number) => {
 
+        console.log('searchTerm: ' + props.searchTerm)
+
         let contactInfo = <ContactInformation contact={lawyer.contact} />
 
-      if(props.filter){
-        
-      }
+        if(props.searchTerm){
+
+          if(props.searchTerm != lawyer.lastName 
+            && props.searchTerm != lawyer.firstName 
+            && props.searchTerm != lawyer.contact.city
+            ){
+              console.log('lastName: ', lawyer.lastName)
+              return;
+          }
+        }
+
+        // if(props.filter){
+        //   if(lawyer.lastName !==  )
+        // }
 
         return <LawyerRow 
             firstName={lawyer.firstName}
