@@ -1,6 +1,19 @@
+'use client'
+
 import {Lawyer} from '../types/lawyer'
 
-const getLawyers = () => {
+async function getLawyers(setLawyers: Function){
+  console.log('getLawyersAsync()')
+  await fetch('http://localhost:8080/lawyers').then((res) => {
+    if(res.ok){
+      res.json().then((data) => {
+        setLawyers(data)
+      })
+    }
+  })
+}
+
+const getLawyersMock = () => {
     const greg: Lawyer = {firstName:'Greg', lastName:'Evans', firm:'EPFL', contact: {
         phoneNumber: '204-479-2958',
         address: '193 Sherbrook St',

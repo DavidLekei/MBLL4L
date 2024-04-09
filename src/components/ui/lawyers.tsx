@@ -21,6 +21,8 @@ import {
   
 import LawyerRow from './lawyerrow'
 import { Lawyer } from "@/types/lawyer"
+import { useEffect, useState } from "react"
+import {getLawyers} from '../../api/api'
 
 function ContactInformation(props: any){
     return(
@@ -35,9 +37,25 @@ function ContactInformation(props: any){
 
 export default function Lawyers(props: any){
 
-    console.log("lawyers!")
+    const [data, setData] = useState(null);
 
-    const lawyers = props.data.map((lawyer: Lawyer, index: number) => {
+    useEffect(
+      () => {
+        getLawyers(setData);
+      }, []
+    )
+
+    console.log('data: ', data)
+
+    if(!data){
+      return(
+        <div>
+          Loading
+        </div>
+      )
+    }
+
+    const lawyers = data.map((lawyer: Lawyer, index: number) => {
 
         let contactInfo = <ContactInformation contact={lawyer.contact} />
 
