@@ -18,7 +18,7 @@ export default function Navbar(props: any){
     return(
         <div className="mt-10 w-full flex flex-row items-center justify-between">
             <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">
-                Demo
+                MBLL4L
                 {/* Manitoba Lawyer Lookup - For Lawyers */}
             </h1>
             <div className="flex flex-row justify-evenly">

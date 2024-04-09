@@ -18,11 +18,18 @@ import {
     PaginationNext,
     PaginationPrevious,
   } from "@/components/ui/pagination"
+
+import { Button } from "@/components/ui/button"
+import {Input} from"@/components/ui/input"
   
 import LawyerRow from './lawyerrow'
 import { Lawyer } from "@/types/lawyer"
 import { useEffect, useState } from "react"
 import {getLawyers} from '../../api/api'
+
+function getLawyerDataInTable(){
+
+}
 
 function ContactInformation(props: any){
     return(
@@ -38,6 +45,8 @@ function ContactInformation(props: any){
 export default function Lawyers(props: any){
 
     const [data, setData] = useState(null);
+    const [input, setInput] = useState<string>();
+    const [searchTerm, setSearchTerm] = useState<string>();
 
     useEffect(
       () => {
@@ -53,26 +62,56 @@ export default function Lawyers(props: any){
       )
     }
 
-    const lawyers = data.map((lawyer: Lawyer, index: number) => {
+    const lawyersForExport: Lawyer[] = []
 
-        console.log('searchTerm: ' + props.searchTerm)
+    const search = () => {
+        setSearchTerm(input)
+    }
+
+    const download = (file: string) => {
+      const a = document.createElement('a')
+      a.style.display = "none"
+      a.target = "_blank"
+      a.href = "data:text/csv;charset=utf-8," + encodeURIComponent(file)
+      a.download = "Manitoba-Lawyers-" + new Date() + ".csv"
+      document.body.appendChild(a)
+      a.click()
+      document.body.removeChild(a)
+    }
+
+    const exportToFile = () => {
+      console.log("lawyersForExport = ", lawyersForExport);
+      let csv = "Last Name, First Name, Firm, Email, Phone Number, Fax, Address, Status, History\n"
+
+      lawyersForExport.forEach((lawyer: Lawyer, index: number) => {
+        const addressString = lawyer.contact.address + ' ' + lawyer.contact.city + ' ' + lawyer.contact.province + ' ' + lawyer.contact.postalCode
+        const asString = lawyer.lastName + ',' + lawyer.firstName  + ',' + lawyer.firm  + ',' + lawyer.contact.email  + ',' + lawyer.contact.phoneNumber  + ',' + lawyer.contact.fax  + ',' + addressString  + ',' + lawyer.status  + ',' + lawyer.history + "\n"
+        
+        console.log('addressString: ', addressString)
+        console.log('asString: ', asString)
+
+        csv = csv.concat(asString)
+      })
+      
+      download(csv)
+    }
+
+    const lawyers = data.map((lawyer: Lawyer, index: number) => {
 
         let contactInfo = <ContactInformation contact={lawyer.contact} />
 
-        if(props.searchTerm){
+        if(searchTerm){
 
-          if(props.searchTerm != lawyer.lastName 
-            && props.searchTerm != lawyer.firstName 
-            && props.searchTerm != lawyer.contact.city
+          if(searchTerm != lawyer.lastName 
+            && searchTerm != lawyer.firstName 
+            && searchTerm != lawyer.contact.city
             ){
               console.log('lastName: ', lawyer.lastName)
               return;
           }
         }
 
-        // if(props.filter){
-        //   if(lawyer.lastName !==  )
-        // }
+        lawyersForExport.push(lawyer);
 
         return <LawyerRow 
             firstName={lawyer.firstName}
@@ -85,7 +124,16 @@ export default function Lawyers(props: any){
     })
 
     return(
-    <div>
+    <div className="w-full">
+        <div id="button-container" className="flex flex-row justify-between mb-10">
+            <div className="flex flex-row">
+                <Input id="search-input" className="col-span-3 rounded-lg" type="text" placeholder="Name, City, Postal Code..." onInput={(e: Event) => {
+                    setInput((e.target as HTMLInputElement).value)
+                }}/>
+                <Button className="ml-20 rounded-md hover:bg-primary-hover" onClick={search}>Search</Button>
+            </div>
+            <Button variant="outline" onClick={exportToFile}>Export to CSV</Button>
+        </div>
         <Table className={styles.table}>
           <TableHeader >
             <TableRow>

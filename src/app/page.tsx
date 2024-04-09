@@ -17,7 +17,6 @@ export default function Home() {
     <div className="app-margins">
       <Navbar />
       <main className={styles.main}>
-        <Header setSearchTerm={setSearchTerm}/>
         <div className={styles.container}>
           <Lawyers filter={filter} searchTerm={searchTerm}/>
         </div>
