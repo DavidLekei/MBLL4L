@@ -8,14 +8,17 @@ import { useRouter } from 'next/navigation'
 
 import About from './about'
 import LoginSheet from './loginsheet'
+import { AuthContext } from '@/api/auth/auth';
+import { useContext } from 'react';
   
   
 export default function Navbar(props: any){
 
     const router = useRouter()
 
-    const aboutButton = <Button className="ml-10" variant="ghost">About</Button>
-    const logInButton = <Button className="ml-10 hover:bg-primary-hover">Log In</Button>
+    const auth = useContext(AuthContext)
+
+    console.log('auth: ', auth)
 
     const home = () => {
         router.push("/")
@@ -24,6 +27,14 @@ export default function Navbar(props: any){
     const signup = () => {
         router.push("/signup")
     }
+
+    const aboutButton = <Button className="ml-10" variant="ghost">About</Button>
+    const logInButton = <Button className="ml-10 hover:bg-primary-hover">Log In</Button>
+
+    const signUpButton = <Button className="ml-10" variant="ghost" onClick={signup}>Sign Up</Button>
+    const loginSheet = <LoginSheet trigger={logInButton} />
+
+    const buttons = <div>{signUpButton}{loginSheet}</div>
 
     return(
         <div className="mt-10 w-full flex flex-row items-center justify-between">
@@ -34,8 +45,7 @@ export default function Navbar(props: any){
             <div className="flex flex-row justify-evenly">
                 <Button className="ml-10" variant="ghost">API</Button>
                 <About trigger={aboutButton} />
-                <Button className="ml-10" variant="ghost" onClick={signup}>Sign Up</Button>
-                <LoginSheet trigger={logInButton} />
+                {auth.user ? <div className="ml-10 lg:text-xl font-bold flex items-center">{auth.user.email}</div> : buttons}
             </div>
         </div>
     )
