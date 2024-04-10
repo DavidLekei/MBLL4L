@@ -24,8 +24,10 @@ import {Input} from"@/components/ui/input"
   
 import LawyerRow from './lawyerrow'
 import { Lawyer } from "@/types/lawyer"
-import { useEffect, useState } from "react"
+import { useContext, useEffect, useState } from "react"
 import {getLawyers} from '../../api/api'
+import { AuthContext } from "@/api/auth/auth"
+import SavedSearches from "./savedsearches"
 
 function getLawyerDataInTable(){
 
@@ -48,6 +50,8 @@ export default function Lawyers(props: any){
     const [input, setInput] = useState<string>();
     const [searchTerm, setSearchTerm] = useState<string>();
 
+    const auth = useContext(AuthContext)
+
     useEffect(
       () => {
         getLawyers(setData);
@@ -65,6 +69,7 @@ export default function Lawyers(props: any){
     const lawyersForExport: Lawyer[] = []
 
     const search = () => {
+        console.log('searching for: ', input)
         setSearchTerm(input)
     }
 
@@ -130,8 +135,14 @@ export default function Lawyers(props: any){
                 <Input id="search-input" className="col-span-3 rounded-lg" type="text" placeholder="Name, City, Postal Code..." onInput={(e: Event) => {
                     setInput((e.target as HTMLInputElement).value)
                 }}/>
-                <Button className="ml-20 rounded-md hover:bg-primary-hover" onClick={search}>Search</Button>
+                <Button className="ml-20 rounded-md hover:bg-primary-hover" id="search-button" onClick={search}>Search</Button>
             </div>
+            {
+              auth.user ?
+              <SavedSearches setSearchTerm={setSearchTerm}/>
+              :
+              <div><Button>Not Authed</Button></div>
+            }
             <Button variant="outline" onClick={exportToFile}>Export to CSV</Button>
         </div>
         <Table className={styles.table}>
