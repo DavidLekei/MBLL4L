@@ -1,3 +1,4 @@
+import { useRouter } from 'next/navigation'
 import {Component, useContext, createContext, useState, useEffect} from 'react'
 
 type Token = {
@@ -12,16 +13,26 @@ export type User = {
 type AuthContext = {
     user: User | null;
     setUser(user: User): void;
+    logout():void
 }
 
 export const AuthContext = createContext<AuthContext>({
     user: null,
-    setUser: (user) => user
+    setUser: (user) => user,
+    logout: () => {}
 });
 
 export default function AuthenticationProvider(props: any){
 
+    const router = useRouter()
+
     const [user, setUser] = useState<User | null>(null)
+
+    const logout = () => {
+        localStorage.removeItem('user')
+        setUser(null)
+        router.push("/")
+    }
 
     if(!user){
         const currentUser = JSON.parse(localStorage.getItem('user') as any)
@@ -34,7 +45,8 @@ export default function AuthenticationProvider(props: any){
         <AuthContext.Provider
             value={{
                 user,
-                setUser
+                setUser,
+                logout
             }}>
             {props.children}
         </AuthContext.Provider>
