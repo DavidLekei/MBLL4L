@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
+import AuthenticationProvider from "@/api/auth/auth";
+import SettingsProvider from '@/components/settings/settings'
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -15,8 +17,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className="!min-w-full" >{children}</body>
-    </html>
+    <AuthenticationProvider>
+      <SettingsProvider>
+      <html lang="en">
+        <body className="!min-w-full" >{children}</body>
+      </html>
+      </SettingsProvider>
+    </AuthenticationProvider>
   );
 }

@@ -14,8 +14,6 @@ export default function Home() {
   const [searchTerm, setSearchTerm] = useState(null);
 
   return (
-    <AuthenticationProvider>
-      <SettingsProvider>
         <div className="app-margins">
           <Navbar />
           <main className={styles.main}>
@@ -24,7 +22,5 @@ export default function Home() {
             </div>
           </main>
         </div>
-      </SettingsProvider>
-    </AuthenticationProvider>
   );
 }

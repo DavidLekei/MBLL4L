@@ -4,6 +4,8 @@
 
 :root {
   --primary: 239, 83.5%, 66.7%;
+  --background: 360, 100%, 100%;
+  --input: 239, 83.5%, 88%;
   --primary-foreground: 0, 0%, 100%;
   --radius: 5px;
   --max-width: 1100px;

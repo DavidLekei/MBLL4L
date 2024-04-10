@@ -13,6 +13,7 @@ import LoginSheet from "./loginsheet"
 import { useRouter } from "next/navigation"
 import { AuthContext } from "@/api/auth/auth"
 import { useContext } from "react"
+import Link from "next/link"
 
 export default function AccountControls() {
 
@@ -50,14 +51,16 @@ export default function AccountControls() {
       <DropdownMenuTrigger asChild>
         {account}
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="flex flex-col z-50 bg-white">
+      <DropdownMenuContent className="flex flex-col z-50 bg-white w-full">
         <DropdownMenuSeparator />
-        <Button variant="ghost" onClick={preferences}>
+        <Link href="/preferences" className="flex flex-row w-full text-med pl-5 pr-5 pb-5">
+          <img src="settings-24.png" className="mr-5"></img>
           Preferences
-        </Button>
-        <Button variant="secondary" onClick={logout}>
+        </Link>
+        <Link href="/" className="flex flex-row w-full text-lg pl-5 pr-5 pb-5" onClick={logout}>
+          <img src="logout-24.png" className="mr-5"></img>
           Logout
-        </Button>
+        </Link>
       </DropdownMenuContent>
     </DropdownMenu>
   )
