@@ -5,17 +5,17 @@ import Lawyers from '../components/ui/lawyers'
 import Navbar from '../components/ui/navbar'
 import { useContext, useState } from "react"
 
-import AuthenticationProvider, { AuthContext } from "@/api/auth/auth"
+import AuthenticationProvider from "@/api/auth/auth"
+import SettingsProvider from "@/components/settings/settings"
 
 export default function Home() {
 
   const [filter, setFilter] = useState(null);
   const [searchTerm, setSearchTerm] = useState(null);
 
-  const auth = useContext(AuthContext);
-
   return (
     <AuthenticationProvider>
+      <SettingsProvider>
         <div className="app-margins">
           <Navbar />
           <main className={styles.main}>
@@ -24,6 +24,7 @@ export default function Home() {
             </div>
           </main>
         </div>
+      </SettingsProvider>
     </AuthenticationProvider>
   );
 }

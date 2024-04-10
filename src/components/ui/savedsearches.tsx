@@ -22,8 +22,6 @@ import { useState } from "react"
     const [selected, setSelected] = useState<string | undefined>()
     const [key, setKey] = useState<number>(0)
 
-    console.log('selected: ', selected)
-
     const onSelect = (value: string) => {
         setSelected(value)
         props.setSearchTerm(value)

@@ -3,7 +3,6 @@
 import {Lawyer} from '../types/lawyer'
 
 async function getLawyers(setLawyers: Function){
-  console.log('getLawyersAsync()')
   await fetch('http://localhost:8080/lawyers').then((res) => {
     if(res.ok){
       res.json().then((data) => {

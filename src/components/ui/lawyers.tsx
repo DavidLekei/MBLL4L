@@ -85,16 +85,12 @@ export default function Lawyers(props: any){
     }
 
     const exportToFile = () => {
-      console.log("lawyersForExport = ", lawyersForExport);
       let csv = "Last Name, First Name, Firm, Email, Phone Number, Fax, Address, Status, History\n"
 
       lawyersForExport.forEach((lawyer: Lawyer, index: number) => {
         const addressString = lawyer.contact.address + ' ' + lawyer.contact.city + ' ' + lawyer.contact.province + ' ' + lawyer.contact.postalCode
         const asString = lawyer.lastName + ',' + lawyer.firstName  + ',' + lawyer.firm  + ',' + lawyer.contact.email  + ',' + lawyer.contact.phoneNumber  + ',' + lawyer.contact.fax  + ',' + addressString  + ',' + lawyer.status  + ',' + lawyer.history + "\n"
         
-        console.log('addressString: ', addressString)
-        console.log('asString: ', asString)
-
         csv = csv.concat(asString)
       })
       
@@ -111,7 +107,6 @@ export default function Lawyers(props: any){
             && searchTerm != lawyer.firstName 
             && searchTerm != lawyer.contact.city
             ){
-              console.log('lastName: ', lawyer.lastName)
               return;
           }
         }
@@ -141,7 +136,7 @@ export default function Lawyers(props: any){
               auth.user ?
               <SavedSearches setSearchTerm={setSearchTerm}/>
               :
-              <div><Button>Not Authed</Button></div>
+              <div></div>
             }
             <Button variant="outline" onClick={exportToFile}>Export to CSV</Button>
         </div>

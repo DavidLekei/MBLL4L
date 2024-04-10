@@ -19,8 +19,6 @@ export default function Navbar(props: any){
 
     const auth = useContext(AuthContext)
 
-    console.log('auth: ', auth)
-
     const home = () => {
         router.push("/")
     }
