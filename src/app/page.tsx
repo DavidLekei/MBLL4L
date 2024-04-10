@@ -4,7 +4,7 @@ import styles from "./page.module.css"
 import Lawyers from '../components/ui/lawyers'
 import Navbar from '../components/ui/navbar'
 import { useContext, useState } from "react"
-
+import { Toaster } from "@/components/ui/toaster"
 import AuthenticationProvider from "@/api/auth/auth"
 import SettingsProvider from "@/components/settings/settings"
 
@@ -20,6 +20,7 @@ export default function Home() {
             <div className={styles.container}>
               <Lawyers filter={filter} searchTerm={searchTerm}/>
             </div>
+            <Toaster />
           </main>
         </div>
   );

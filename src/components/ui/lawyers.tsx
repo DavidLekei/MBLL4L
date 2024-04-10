@@ -28,6 +28,7 @@ import { useContext, useEffect, useState } from "react"
 import {getLawyers} from '../../api/api'
 import { AuthContext } from "@/api/auth/auth"
 import SavedSearches from "./savedsearches"
+import ExportTypes from "./exporttypes"
 
 function getLawyerDataInTable(){
 
@@ -138,7 +139,10 @@ export default function Lawyers(props: any){
               :
               <div></div>
             }
-            <Button variant="outline" onClick={exportToFile}>Export to CSV</Button>
+            <div className="flex flex-row items-center">
+              <Button variant="outline" onClick={exportToFile}>Export to CSV</Button>
+              {auth.user ? <ExportTypes /> : <div></div>}
+            </div>
         </div>
         <Table className={styles.table}>
           <TableHeader >

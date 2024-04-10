@@ -1,3 +1,5 @@
+'use client'
+
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -15,12 +17,27 @@ import {
     SelectTrigger,
     SelectValue,
   } from "@/components/ui/select"
-import { useState } from "react"
+import { useEffect, useState } from "react"
+import { useToast } from "./use-toast"
+
+const mockData = [
+    'Winnipeg',
+    'Evans',
+    'Dauphin'
+]
 
   export default function SavedSearches(props: any){
 
+    const {toast} = useToast()
+
     const [selected, setSelected] = useState<string | undefined>()
+    const [savedSearches, setSavedSearches] = useState<string[]>([])
     const [key, setKey] = useState<number>(0)
+
+    //TODO: Call API to get from Database
+    useEffect(() => {
+        setSavedSearches(mockData)
+    }, [])
 
     const onSelect = (value: string) => {
         setSelected(value)
@@ -33,18 +50,21 @@ import { useState } from "react"
         setKey(key + 1)
     }
 
-    const mockData = [
-        'Winnipeg',
-        'Evans',
-        'Dauphin'
-    ]
-
-    const savedSearchTerms =
-        mockData.map((searchTerm, index) => {
-            return(
-                <SelectItem value={searchTerm}>{searchTerm}</SelectItem>
-            )
+    const add = () => {
+        const searchTerm = (document.getElementById('search-input') as HTMLInputElement).value
+        //TODO: API Call here to persist to Database
+        if(searchTerm != '' && !mockData.includes(searchTerm)){
+            mockData.push(searchTerm)
+        }
+        setSavedSearches(mockData)
+        toast({
+            title: 'New Search Added',
+            description: 'Saved the search term "' + searchTerm + '" for future use.'
         })
+    }
+
+
+    //TODO: useEffect to get from database and re-render?
 
     return (
         <div className="flex flex-row">
@@ -54,11 +74,18 @@ import { useState } from "react"
             </SelectTrigger>
             <SelectContent className="bg-white">
                 <SelectGroup>
-                    {savedSearchTerms}
+                    {savedSearches.map((searchTerm, index) => {
+                            return(
+                                <SelectItem value={searchTerm}>
+                                    {searchTerm}
+                                </SelectItem>
+                            )
+                    })}
                 </SelectGroup>
             </SelectContent>
             </Select>
             <Button variant="ghost" onClick={clear}>Clear</Button>
+            <Button variant="ghost" onClick={add}>Add</Button>
         </div>
       )
     // return(
