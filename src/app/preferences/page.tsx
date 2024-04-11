@@ -2,18 +2,11 @@
 import styles from "../page.module.css"
 import Navbar from '../../components/ui/navbar'
 import { Setting, SettingsContext } from "@/components/settings/settings"
-import { useContext } from "react"
+import { useContext, useEffect, useState } from "react"
 import { AuthContext } from "@/api/auth/auth"
 import { useRouter } from "next/navigation"
 import { Switch } from "@/components/ui/switch"
 
-function SwitchSetting(props:  any){
-    return(
-        <div className={"flex flex-row items-center justify-apart"}>
-            <Switch id={props.name} disabled={props.disabled}/>
-        </div>
-    )
-}
 
 function DropdownSetting(props: any){
 
@@ -33,33 +26,71 @@ export default function Preferences(props: any){
 
     const settings = useContext(SettingsContext)
 
-    const getElement = (setting: Setting, disabled: Boolean) => {
-        if(setting.element == 'switch'){
-            return <SwitchSetting name={setting.display} disabled={disabled} />
+    // useEffect(() => {
+    //     console.log('useEffect')
+    // }, [settings])
+
+    const SwitchSetting = (props: any) => {
+
+        const [isChecked, setIsChecked] = useState<Boolean>(props.setting.value);
+
+        const handleChange = () => {
+            props.updateDisabled(!isChecked)
         }
-    }
-
-    const settingsElements = []
-
-    for(var s in settings.settings){
-        var setting = settings.settings[s]
-        var disabled = false
-
-        if(setting.dependencies){
-            setting.dependencies.forEach((d: string) => {
-                if(settings.settings[d.dependent].value != d.dependentValue){
-                    disabled = true
-                }
-            })
-        }
-
-        settingsElements.push(
-            <div className={`flex flex-row w-full justify-between m-5 ${disabled ? 'text-disabled' : ''}`}>
-                {setting.display}
-                {getElement(setting, disabled)}
+    
+        return(
+            <div className={"flex flex-row items-center justify-apart"}>
+                <Switch onCheckedChange={handleChange} id={props.name} disabled={props.disabled}/>
             </div>
         )
     }
+
+    const getElement = (setting: Setting, disabled: Boolean, updateDisabled: Function) => {
+        if(setting.element == 'switch'){
+            return <SwitchSetting setting={setting} disabled={disabled} updateDisabled={updateDisabled}/>
+        }
+    }
+
+    const SettingElement = (props: any) => {
+        const [value, setValue] = useState<Boolean | string | number>(props.setting.value);
+        const [childrenDisabled, setChildrenDisabled] = useState<Boolean>(props.setting.value ? false : true)
+
+        let children: any
+
+        const updateValue = () => {
+            if(children){
+                for(var child in children){
+                    console.log('child: ', child)
+                }
+            }
+            setValue(!value)
+        }
+
+        if(props.setting.children){
+            children = props.setting.children.map((child: Setting, index: number) => {
+                        return(
+                            <SettingElement setting={child} child disabled={!value} />
+                        )
+            })
+        }
+        
+        return(
+            <div className="flex flex-col">
+                <div className={`flex flex-row w-full justify-between m-5 ${props.child ? 'pl-10' : ''} ${props.disabled ? 'text-disabled' : ''}`}>
+                    {props.setting.display}
+                    {getElement(props.setting, props.disabled, updateValue)}
+                </div>
+                {children}
+            </div>
+        )
+    }
+
+
+    const settingsElements = settings.settings.map((setting: Setting, index: number) => {
+        return(
+            <SettingElement setting={setting} />
+        )
+    })
 
     return(
         <div className="app-margins">

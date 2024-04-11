@@ -101,8 +101,6 @@ export default function Lawyers(props: any){
 
     const lawyerRows = data.map((lawyer: Lawyer, index: number) => {
 
-      console.log('mapping data: ', data)
-
         let contactInfo = <ContactInformation contact={lawyer.contact} />
 
         if(searchTerm){

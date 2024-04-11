@@ -4,50 +4,54 @@ import { AuthContext } from '@/api/auth/auth';
 import { useRouter } from 'next/navigation'
 import {Component, useContext, createContext, useState, useEffect} from 'react'
 
-type Dependency = {
-    dependent: string,
-    dependentValue: Boolean | string | number
-}
 
 export type Setting = {
-    display: string;
-    value: Boolean | string | number;
-    element: string
-    dependencies: Dependency[] | null
+    name: string,
+    display: string,
+    value: Boolean | string | number,
+    element: string,
+    default: Boolean | string | number,
+    disabled: Boolean,
+    children: Setting[] | null
 }
 
-type Settings = {}
+type Settings = Setting[]
 
 type SettingsContext = {
     settings: Settings | null
     setSettings: (settings: Settings) => any
 }
 
-const defaultSettings: Settings = {
-    theme: {
+const defaultSettings: Settings = [
+    {
+        name:'theme',
         display: 'Theme',
         value: 'light',
         element: 'switch',
-        dependencies: null
+        default: 'light',
+        disabled: false,
+        children:null
     },
-    automate: {
+    {
+        name:'automate',
         display: 'Enable automated CSV files emailed to you',
         value: false,
         element: 'switch',
-        dependencies: null
-    },
-    cycle: {
-        display: 'How often should MBLL4L send automated reports?',
-        value: 'Monthly',
-        element: 'switch',
-        dependencies: [
+        default: false,
+        disabled: false,
+        children: [
             {
-                dependent: 'automate',
-                dependentValue: true
+                name:'cycle',
+                display: 'How often should MBLL4L send automated reports?',
+                value: 'Monthly',
+                element: 'switch',
+                default: 'Monthly',
+                disabled: true,
+                children: null
             }
         ]
     }
-}
+]
 
 export const SettingsContext = createContext<SettingsContext>({
     settings: defaultSettings,

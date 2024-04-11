@@ -14,7 +14,7 @@ export default function ExportTypes(props: any){
 
     const exportDropdownItems = exportTypes.map((type, index) => {
         return(
-            <DropdownMenuItem className="flex flex-row w-full text-med pl-5 pr-5 pb-5">
+            <DropdownMenuItem className="flex flex-row w-full text-med p-5 cursor-pointer">
                 {type}
             </DropdownMenuItem>
         )
