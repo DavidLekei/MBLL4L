@@ -47,7 +47,7 @@ function ContactInformation(props: any){
 
 export default function Lawyers(props: any){
 
-    const [data, setData] = useState(null);
+    const [data, setData] = useState<Lawyer[]>([]);
     const [input, setInput] = useState<string>();
     const [searchTerm, setSearchTerm] = useState<string>();
 
@@ -55,6 +55,7 @@ export default function Lawyers(props: any){
 
     useEffect(
       () => {
+        console.log('use effect')
         getLawyers(setData);
       }, []
     )
@@ -98,7 +99,9 @@ export default function Lawyers(props: any){
       download(csv)
     }
 
-    const lawyers = data.map((lawyer: Lawyer, index: number) => {
+    const lawyerRows = data.map((lawyer: Lawyer, index: number) => {
+
+      console.log('mapping data: ', data)
 
         let contactInfo = <ContactInformation contact={lawyer.contact} />
 
@@ -124,6 +127,65 @@ export default function Lawyers(props: any){
         </LawyerRow>
     })
 
+    const sort = (column: string) => {
+      const temp = [...data]; //This is some of the most disgusting shit I've ever seen, that I have to COPY the contents of the entire array before sorting it
+                              //in order for it to re-render. 
+      const sorted = temp.sort((a, b) => {
+
+        let aField
+        let bField
+
+        if(column == 'lastName'){
+          aField = a.lastName
+          bField = b.lastName
+        }
+        else if(column == 'firstName'){
+          aField = a.firstName
+          bField = b.firstName
+        }
+        else if(column == 'firm'){
+          aField = a.firm
+          bField = b.firm
+        }
+        else if(column == 'status'){
+          aField = a.status
+          bField = b.status
+        }
+        else{
+          return
+        }
+
+        console.log('sorting by: ', column)
+        //negative = a before b
+        //positive = b before a
+        //0 = equal
+        for(let i = 0; i < aField.length; i++){
+          if(aField[i] && bField[i]){
+            if(aField[i] > bField[i]){
+              return 1
+            }
+
+            if(bField[i] > aField[i]){
+              return -1
+            }
+
+            continue
+          }else{
+            if(aField[i]){
+              return 1
+            }
+            if(bField[i]){
+              return -1
+            }
+            return 0
+          }
+        }
+        return 1
+      })
+
+      setData(sorted)
+    }
+
     return(
     <div className="w-full">
         <div id="button-container" className="flex flex-row justify-between mb-10">
@@ -147,16 +209,25 @@ export default function Lawyers(props: any){
         <Table className={styles.table}>
           <TableHeader >
             <TableRow>
-              <TableHead className="font-bold">Last Name</TableHead>
-              <TableHead className="font-bold">First Name</TableHead>
-              <TableHead className="font-bold">Firm</TableHead>
+              {/*TODO: Abstract the TableHead into it's own component in order to more cleanly manage it's own state? aka 'sortDirection' and 'sorted'*/}
+              <TableHead className="font-bold cursor-pointer" onClick={() => {
+                sort('lastName')
+              }}>Last Name</TableHead>
+              <TableHead className="font-bold cursor-pointer" onClick={() => {
+                sort('firstName')
+              }}>First Name</TableHead>
+              <TableHead className="font-bold cursor-pointer" onClick={() => {
+                sort('firm')
+              }}>Firm</TableHead>
               <TableHead className="font-bold">Contact</TableHead>
-              <TableHead className="font-bold">Status</TableHead>
+              <TableHead className="font-bold cursor-pointer" onClick={() => {
+                sort('status')
+              }}>Status</TableHead>
               <TableHead className="font-bold">History</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
-            {lawyers}
+            {lawyerRows}
             {/* <LawyerRow firstName="Gregory" lastName="Evans" firm="Evans Pollock Family Law" contact="Please don't" status="Practising" history="Lots"/>
             <LawyerRow firstName="Richard" lastName="Pollock" firm="Evans Pollock Family Law" contact="" status="Practising" history="Not as much as Greg"/> */}
           </TableBody>
