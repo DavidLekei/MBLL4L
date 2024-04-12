@@ -20,7 +20,9 @@ export type Setting = {
     // update: (newValue: Boolean | string | number) => void;
 }
 
-type Settings = {}
+type Settings = {
+    [key: string]: Setting
+}
 
 type SettingsContext = {
     settings: Settings;
@@ -147,12 +149,11 @@ export default function SettingsProvider(props: any){
 
     //TODO: Add API call to update the setting on the DB as well.
     const updateSetting = (settingName: string, newValue: Boolean | string | number) => {
-        const newSetting = {settingName: newValue}
-
-        setSettings(settings => ({
-            ...settings,
-            ...newSetting
-        }))    
+        console.log('settingName: ', settingName)
+        const newSettings = {...settings}
+        console.log('newSettings: ', newSettings)
+        newSettings[settingName].value = newValue
+        setSettings(newSettings)    
     }
 
     if(!settings){

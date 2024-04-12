@@ -101,6 +101,7 @@ export default function Preferences(props: any){
         })
 
         const handleChange = () => {
+            console.log('handing switch change for: ', props.setting.name)
             setIsChecked(!isChecked)
             props.updateDisabled()
             settingsContext.updateSetting(props.setting.name, !props.setting.value)
@@ -125,7 +126,6 @@ export default function Preferences(props: any){
 
         if(props.setting.children){
             children = Object.entries(props.setting.children).map((child: any, index: number) => {
-                    console.log('child: ', child)
                         return(
                             <SettingElement setting={child[1]} child disabled={!value} />
                         )
@@ -146,7 +146,6 @@ export default function Preferences(props: any){
             element = <ButtonsSetting setting={props.setting} disabled={props.disabled} updateDisabled={updateValue} />
         }
 
-        console.log('for setting: ', props.setting.name, ' returning element: ', element)
         return(
             <div className="flex flex-col">
                 <div className={`flex flex-row w-full justify-between m-5 ${props.child ? 'pl-10' : ''} ${props.disabled ? 'text-disabled' : ''}`}>
