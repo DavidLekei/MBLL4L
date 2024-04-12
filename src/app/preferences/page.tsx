@@ -45,12 +45,15 @@ export default function Preferences(props: any){
         const handleChange = (e: any) => {
             setSelected(e.target.innerText)
             settingsContext.updateSetting(props.setting.name, e.target.innerText)
-            props.setting.callback(e.target.innerText)
+            //This works, but I feel like there is/should be a much better way to handle this. 
+            if(props.setting.name == 'theme'){
+                theme.setTheme(e.target.innerText)
+            }
         }
 
         const buttons = props.setting.options.map((button: string, index: any) => {
             return(
-                <Button onClick={handleChange} variant={button == selected ? 'default' : 'outline'}>{button}</Button>
+                <Button className={`${theme.theme}`} onClick={handleChange} variant={button == selected ? 'default' : 'outline'}>{button}</Button>
             )
         })
 
@@ -125,9 +128,9 @@ export default function Preferences(props: any){
         }
 
         if(props.setting.children){
-            children = Object.entries(props.setting.children).map((child: any, index: number) => {
+                props.setting.children.map((child: any, index: number) => {
                         return(
-                            <SettingElement setting={child[1]} child disabled={!value} />
+                            <SettingElement setting={child} child disabled={!value} />
                         )
             })
         }

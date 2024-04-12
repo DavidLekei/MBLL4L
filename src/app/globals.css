@@ -95,6 +95,11 @@ body {
   margin:0;
 }
 
+.Dark{
+  background: #2a2a2b;
+  color:white;
+}
+
 /* body {
   color: rgb(var(--foreground-rgb));
   background: linear-gradient(

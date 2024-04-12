@@ -15,7 +15,7 @@ export type Setting = {
     options: string[] | null | undefined
     default: Boolean | string | number,
     disabled: Boolean,
-    children: Settings[] | null
+    children: string[] | null
     callback: Callback | null
     // update: (newValue: Boolean | string | number) => void;
 }
@@ -43,8 +43,6 @@ export const _settings: Settings = {
         children:null,
         callback: (theme: any) => {
             console.log('callback - theme: ', theme)
-            const themeContext = useContext(ThemeContext)
-            themeContext.setTheme(theme)
         }
     },
     table_view:{
@@ -67,30 +65,29 @@ export const _settings: Settings = {
         default: false,
         disabled: false,
         callback: null,
-        children: {
-            cycle: {
-                name:'cycle',
-                display: 'How often should MBLL4L send automated reports?',
-                value: false,
-                element: 'select',
-                options: ['Daily', 'Monthly', 'Yearly'],
-                default: false,
-                disabled: true,
-                children: null,
-                callback: null
-            },
-            email_address: {
-                name: 'email_address',
-                display:'Send to primary email address',
-                value: true,
-                element: 'switch',
-                options: null,
-                default: false,
-                disabled: true,
-                children: null,
-                callback: null
-            }
-        }
+        children: ['cycle', 'email_address']
+    },
+    cycle: {
+        name:'cycle',
+        display: 'How often should MBLL4L send automated reports?',
+        value: false,
+        element: 'select',
+        options: ['Daily', 'Monthly', 'Yearly'],
+        default: false,
+        disabled: true,
+        children: null,
+        callback: null
+    },
+    email_address: {
+        name: 'email_address',
+        display:'Send to primary email address',
+        value: true,
+        element: 'switch',
+        options: null,
+        default: false,
+        disabled: true,
+        children: null,
+        callback: null
     },
     export_type:{
         name:'export_type',
@@ -129,15 +126,15 @@ export default function SettingsProvider(props: any){
 
     const [settings, setSettings] = useState<Settings | null>(_settings)
 
+    //This actually just works, since the children get 'disabled' (currently at least)
     const _useDefaults = (_settings: Settings | null) => {
-        const defaults = _settings!.slice()
+        const defaults = {...settings}
 
-        for(var setting in defaults){
-            if(defaults[setting].children){
-                _useDefaults(defaults[setting].children)
-            }
-            defaults[setting].value = defaults[setting].default
-        }
+        const keys = Object.keys(defaults)
+        
+        keys.forEach((key) => {
+            defaults[key].value = defaults[key].default
+        })
 
         return defaults
     }
@@ -149,9 +146,9 @@ export default function SettingsProvider(props: any){
 
     //TODO: Add API call to update the setting on the DB as well.
     const updateSetting = (settingName: string, newValue: Boolean | string | number) => {
-        console.log('settingName: ', settingName)
         const newSettings = {...settings}
         console.log('newSettings: ', newSettings)
+        console.log('settingName: ', settingName)
         newSettings[settingName].value = newValue
         setSettings(newSettings)    
     }

@@ -200,10 +200,10 @@ export default function Lawyers(props: any){
               :
               <div></div>
             }
-            <div className="flex flex-row items-center">
+            {/* <div className="flex flex-row items-center">
               <Button variant="outline" onClick={exportToFile}>Export to CSV</Button>
               {auth.user ? <ExportTypes /> : <div></div>}
-            </div>
+            </div> */}
             <ExportControls exportFunction={exportToFile} />
         </div>
         <Table className={styles.table}>
