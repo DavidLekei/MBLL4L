@@ -7,6 +7,15 @@ import { AuthContext } from "@/api/auth/auth"
 import { useRouter } from "next/navigation"
 import { Switch } from "@/components/ui/switch"
 import { Button } from "@/components/ui/button"
+import {
+    Select,
+    SelectContent,
+    SelectGroup,
+    SelectItem,
+    SelectLabel,
+    SelectTrigger,
+    SelectValue,
+  } from "@/components/ui/select"
 
 
 function DropdownSetting(props: any){
@@ -28,7 +37,56 @@ export default function Preferences(props: any){
     const settingsContext = useContext(SettingsContext)
     const settings = settingsContext.settings
 
-    // const [settings, setSettings] = useState(settingsContext.settings)
+    const ButtonsSetting = (props: any) => {
+        
+        const [selected, setSelected] = useState<string>(props.setting.value)
+
+        const handleChange = (e: any) => {
+            setSelected(e.target.innerText)
+            settingsContext.updateSetting(props.setting.name, e.target.innerText)
+        }
+
+        const buttons = props.setting.options.map((button: string, index: any) => {
+            return(
+                <Button onClick={handleChange} variant={button == selected ? 'default' : 'outline'}>{button}</Button>
+            )
+        })
+
+        return(
+            <div className="flex flex-row">
+                {buttons}
+            </div>
+        )
+
+    }
+
+    const SelectSetting = (props: any) => {
+
+        const [value, setValue] = useState<string>()
+
+        const handleChange = (newValue: string) => {
+            settingsContext.updateSetting(props.setting.name, newValue)
+        }
+
+        const items = props.setting.options.map((item: any, index: any) => {
+            return(
+                <SelectItem value={item}>{item}</SelectItem>
+            )
+        })
+
+        return(
+            <Select onValueChange={handleChange} disabled={props.disabled}>
+                <SelectTrigger className="w-[180px]">
+                    <SelectValue placeholder={props.setting.value ? props.setting.value : props.setting.default} />
+                </SelectTrigger>
+                <SelectContent className="bg-white">
+                    <SelectGroup>
+                    {items}
+                    </SelectGroup>
+                </SelectContent>
+            </Select>
+        )
+    }
 
     const SwitchSetting = (props: any) => {
 
@@ -71,10 +129,18 @@ export default function Preferences(props: any){
             })
         }
 
-        let element
+        let element: any
 
         if(props.setting.element == 'switch'){
             element = <SwitchSetting setting={props.setting} disabled={props.disabled} updateDisabled={updateValue}/>
+        }
+
+        if(props.setting.element == 'select'){
+            element = <SelectSetting setting={props.setting} disabled={props.disabled} updateDisabled={updateValue} />
+        }
+
+        if(props.setting.element == 'buttons'){
+            element = <ButtonsSetting setting={props.setting} disabled={props.disabled} updateDisabled={updateValue} />
         }
 
         

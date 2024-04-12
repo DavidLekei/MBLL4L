@@ -8,11 +8,12 @@ import {Component, useContext, createContext, useState, useEffect} from 'react'
 export type Setting = {
     name: string,
     display: string,
-    value: Boolean | string | number,
+    value: Boolean | string | number | null | undefined,
     element: string,
+    options: string[] | null | undefined
     default: Boolean | string | number,
     disabled: Boolean,
-    children: Setting[] | null,
+    children: Setting[] | null
     // update: (newValue: Boolean | string | number) => void;
 }
 
@@ -25,22 +26,23 @@ type SettingsContext = {
     useDefaults(): void;
 }
 
-export const settings: Settings = [
+export const _settings: Settings = [
     {
         name:'theme',
         display: 'Theme',
-        value: false,
-        element: 'switch',
-        default: false,
+        value: 'Light',
+        element: 'buttons',
+        options: ['Light', 'Dark'],
+        default: 'Light',
         disabled: false,
-        children:null,
-
+        children:null
     },
     {
         name:'automate',
         display: 'Enable automated CSV files emailed to you',
         value: false,
         element: 'switch',
+        options: null,
         default: false,
         disabled: false,
         children: [
@@ -48,7 +50,8 @@ export const settings: Settings = [
                 name:'cycle',
                 display: 'How often should MBLL4L send automated reports?',
                 value: false,
-                element: 'switch',
+                element: 'select',
+                options: ['Daily', 'Monthly', 'Yearly'],
                 default: false,
                 disabled: true,
                 children: null
@@ -58,57 +61,27 @@ export const settings: Settings = [
                 display:'Send to primary email address',
                 value: true,
                 element: 'switch',
+                options: null,
                 default: false,
                 disabled: true,
                 children: null
             }
         ]
-    }
-]
-
-export const defaultSettings: Settings = [
-    {
-        name:'theme',
-        display: 'Theme',
-        value: false,
-        element: 'switch',
-        default: false,
-        disabled: false,
-        children:null,
-
     },
     {
-        name:'automate',
-        display: 'Enable automated CSV files emailed to you',
-        value: false,
-        element: 'switch',
-        default: false,
+        name:'export_type',
+        display: 'Default export file type',
+        value: null,
+        element: 'select',
+        options: ['CSV', 'JSON', 'XML', 'DOCX', 'PDF'],
+        default: 'CSV',
         disabled: false,
-        children: [
-            {
-                name:'cycle',
-                display: 'How often should MBLL4L send automated reports?',
-                value: false,
-                element: 'switch',
-                default: false,
-                disabled: true,
-                children: null
-            },
-            {
-                name: 'email_address',
-                display:'Send to primary email address',
-                value: true,
-                element: 'switch',
-                default: false,
-                disabled: true,
-                children: null
-            }
-        ]
+        children:null
     }
 ]
 
 export const SettingsContext = createContext<SettingsContext>({
-    settings: settings,
+    settings: _settings,
     setSettings: (settings) => settings,
     updateSetting: (setting, newValue) => {},
     useDefaults: () => {}
@@ -118,7 +91,7 @@ export default function SettingsProvider(props: any){
 
     const auth = useContext(AuthContext)
 
-    const [settings, setSettings] = useState<Settings | null>(null)
+    const [settings, setSettings] = useState<Settings | null>(_settings)
 
     const _useDefaults = (_settings: Settings | null) => {
         const defaults = _settings!.slice()
@@ -172,7 +145,7 @@ export default function SettingsProvider(props: any){
         if(storedSettings != null){
             setSettings(storedSettings)
         }else{
-            setSettings(defaultSettings)
+            useDefaults()
         }
     }
 
