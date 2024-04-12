@@ -29,6 +29,7 @@ import {getLawyers} from '../../api/api'
 import { AuthContext } from "@/api/auth/auth"
 import SavedSearches from "./savedsearches"
 import ExportTypes from "./exporttypes"
+import ExportControls from "./exportcontrols"
 
 function getLawyerDataInTable(){
 
@@ -203,6 +204,7 @@ export default function Lawyers(props: any){
               <Button variant="outline" onClick={exportToFile}>Export to CSV</Button>
               {auth.user ? <ExportTypes /> : <div></div>}
             </div>
+            <ExportControls exportFunction={exportToFile} />
         </div>
         <Table className={styles.table}>
           <TableHeader >

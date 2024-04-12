@@ -1,7 +1,8 @@
 'use client'
 import styles from "../page.module.css"
 import Navbar from '../../components/ui/navbar'
-import { Setting, SettingsContext, defaultSettings } from "@/components/settings/settings"
+import { Setting, SettingsContext } from "@/components/settings/settings"
+import {ThemeContext} from "@/components/theme/theme"
 import { useContext, useEffect, useState } from "react"
 import { AuthContext } from "@/api/auth/auth"
 import { useRouter } from "next/navigation"
@@ -27,7 +28,7 @@ export default function Preferences(props: any){
 
     const router = useRouter()
     const auth = useContext(AuthContext)
-
+    const theme = useContext(ThemeContext)
 
     //If user is not logged in, re-route back to home page (if user manually enters the /preferences route)
     if(!auth.user){
@@ -44,6 +45,7 @@ export default function Preferences(props: any){
         const handleChange = (e: any) => {
             setSelected(e.target.innerText)
             settingsContext.updateSetting(props.setting.name, e.target.innerText)
+            props.setting.callback(e.target.innerText)
         }
 
         const buttons = props.setting.options.map((button: string, index: any) => {
@@ -166,19 +168,21 @@ export default function Preferences(props: any){
     }
 
     return(
-        <div className="app-margins">
-        <Navbar />
-        <main className={styles.main}>
-            <div className="flex flex-col items-center">
-                <div className="flex flex-row items-center w-full justify-between pl-5 pb-10">
-                    <h1 className="text-4xl font-bold">Preferences</h1>
-                    <Button variant="outline" onClick={resetSettings}>Reset</Button>
-                </div>
-                <div className="flex flex-col">
-                    {settingsElements}
-                </div>
+        <body className={`!min-w-full ${theme.theme}`} >
+            <div className="app-margins">
+                <Navbar />
+                <main className={styles.main}>
+                    <div className="flex flex-col items-center">
+                        <div className="flex flex-row items-center w-full justify-between pl-5 pb-10">
+                            <h1 className="text-4xl font-bold">Preferences</h1>
+                            <Button variant="outline" onClick={resetSettings}>Reset</Button>
+                        </div>
+                        <div className="flex flex-col">
+                            {settingsElements}
+                        </div>
+                    </div>
+                </main>
             </div>
-        </main>
-    </div>
+        </body>
     )
 }

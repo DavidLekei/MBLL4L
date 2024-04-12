@@ -3,6 +3,8 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import AuthenticationProvider from "@/api/auth/auth";
 import SettingsProvider from '@/components/settings/settings'
+import { ThemeContext, ThemeProvider } from "@/components/theme/theme";
+import { useContext } from "react";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -19,9 +21,11 @@ export default function RootLayout({
   return (
     <AuthenticationProvider>
       <SettingsProvider>
-      <html lang="en">
-        <body className="!min-w-full" >{children}</body>
-      </html>
+        <ThemeProvider>
+          <html lang="en">
+            {children}
+          </html>
+        </ThemeProvider>
       </SettingsProvider>
     </AuthenticationProvider>
   );

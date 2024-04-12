@@ -3,7 +3,9 @@
 import { AuthContext } from '@/api/auth/auth';
 import { useRouter } from 'next/navigation'
 import {Component, useContext, createContext, useState, useEffect} from 'react'
+import { ThemeContext } from '../theme/theme';
 
+type Callback = (...args: any[]) => void
 
 export type Setting = {
     name: string,
@@ -14,6 +16,7 @@ export type Setting = {
     default: Boolean | string | number,
     disabled: Boolean,
     children: Setting[] | null
+    callback: Callback | null
     // update: (newValue: Boolean | string | number) => void;
 }
 
@@ -35,7 +38,23 @@ export const _settings: Settings = [
         options: ['Light', 'Dark'],
         default: 'Light',
         disabled: false,
-        children:null
+        children:null,
+        callback: (theme) => {
+            console.log('callback - theme: ', theme)
+            const themeContext = useContext(ThemeContext)
+            themeContext.setTheme(theme)
+        }
+    },
+    {
+        name:'table_view',
+        display: 'Table display type',
+        value: 'Pagination',
+        element: 'buttons',
+        options: ['Pagination', 'Scroll'],
+        default: 'Scroll',
+        disabled: false,
+        children: null,
+        callback: null
     },
     {
         name:'automate',
@@ -45,6 +64,7 @@ export const _settings: Settings = [
         options: null,
         default: false,
         disabled: false,
+        callback: null,
         children: [
             {
                 name:'cycle',
@@ -54,7 +74,8 @@ export const _settings: Settings = [
                 options: ['Daily', 'Monthly', 'Yearly'],
                 default: false,
                 disabled: true,
-                children: null
+                children: null,
+                callback: null
             },
             {
                 name: 'email_address',
@@ -64,7 +85,8 @@ export const _settings: Settings = [
                 options: null,
                 default: false,
                 disabled: true,
-                children: null
+                children: null,
+                callback: null
             }
         ]
     },
@@ -76,7 +98,19 @@ export const _settings: Settings = [
         options: ['CSV', 'JSON', 'XML', 'DOCX', 'PDF'],
         default: 'CSV',
         disabled: false,
-        children:null
+        children:null,
+        callback: null
+    },
+    {
+        name:'',
+        display:'',
+        value: null,
+        element:'text',
+        options: null,
+        default: '',
+        disabled: false,
+        children: null,
+        callback: null
     }
 ]
 
