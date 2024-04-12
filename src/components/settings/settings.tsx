@@ -15,22 +15,22 @@ export type Setting = {
     options: string[] | null | undefined
     default: Boolean | string | number,
     disabled: Boolean,
-    children: Setting[] | null
+    children: Settings[] | null
     callback: Callback | null
     // update: (newValue: Boolean | string | number) => void;
 }
 
-type Settings = Setting[]
+type Settings = {}
 
 type SettingsContext = {
-    settings: Settings | null;
+    settings: Settings;
     setSettings(settings: Settings): void;
     updateSetting(setting: string, newValue: Boolean | string | number): void;
     useDefaults(): void;
 }
 
-export const _settings: Settings = [
-    {
+export const _settings: Settings = {
+    theme: {
         name:'theme',
         display: 'Theme',
         value: 'Light',
@@ -39,13 +39,13 @@ export const _settings: Settings = [
         default: 'Light',
         disabled: false,
         children:null,
-        callback: (theme) => {
+        callback: (theme: any) => {
             console.log('callback - theme: ', theme)
             const themeContext = useContext(ThemeContext)
             themeContext.setTheme(theme)
         }
     },
-    {
+    table_view:{
         name:'table_view',
         display: 'Table display type',
         value: 'Pagination',
@@ -56,7 +56,7 @@ export const _settings: Settings = [
         children: null,
         callback: null
     },
-    {
+    automate: {
         name:'automate',
         display: 'Enable automated CSV files emailed to you',
         value: false,
@@ -65,8 +65,8 @@ export const _settings: Settings = [
         default: false,
         disabled: false,
         callback: null,
-        children: [
-            {
+        children: {
+            cycle: {
                 name:'cycle',
                 display: 'How often should MBLL4L send automated reports?',
                 value: false,
@@ -77,7 +77,7 @@ export const _settings: Settings = [
                 children: null,
                 callback: null
             },
-            {
+            email_address: {
                 name: 'email_address',
                 display:'Send to primary email address',
                 value: true,
@@ -88,9 +88,9 @@ export const _settings: Settings = [
                 children: null,
                 callback: null
             }
-        ]
+        }
     },
-    {
+    export_type:{
         name:'export_type',
         display: 'Default export file type',
         value: null,
@@ -101,7 +101,7 @@ export const _settings: Settings = [
         children:null,
         callback: null
     },
-    {
+    test: {
         name:'',
         display:'',
         value: null,
@@ -112,7 +112,7 @@ export const _settings: Settings = [
         children: null,
         callback: null
     }
-]
+}
 
 export const SettingsContext = createContext<SettingsContext>({
     settings: _settings,
@@ -145,33 +145,14 @@ export default function SettingsProvider(props: any){
         setSettings(defaults)
     }
 
-    const findSetting = (setting: Setting, name: string, allSettings: Setting[] | null): Setting | undefined => {
-        let theSetting
-        for(var index in allSettings){
-            if(allSettings[index].children){
-                theSetting = findSetting(setting, name, allSettings[index].children)
-                if(theSetting){
-                    return theSetting
-                }
-            }
-            if(allSettings[index].name == name){
-                return allSettings[index]
-            }
-        }
-        return theSetting
-    }
-
     //TODO: Add API call to update the setting on the DB as well.
     const updateSetting = (settingName: string, newValue: Boolean | string | number) => {
-        const newSettings = settings!.slice()
-        let tempSetting
-        for(var setting in newSettings){
-            tempSetting = findSetting(newSettings[setting], settingName, newSettings)
-            if(tempSetting){
-                tempSetting.value = newValue
-            }
-        }
-        setSettings(newSettings)
+        const newSetting = {settingName: newValue}
+
+        setSettings(settings => ({
+            ...settings,
+            ...newSetting
+        }))    
     }
 
     if(!settings){

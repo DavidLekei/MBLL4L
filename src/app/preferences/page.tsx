@@ -124,9 +124,10 @@ export default function Preferences(props: any){
         }
 
         if(props.setting.children){
-            children = props.setting.children.map((child: Setting, index: number) => {
+            children = Object.entries(props.setting.children).map((child: any, index: number) => {
+                    console.log('child: ', child)
                         return(
-                            <SettingElement setting={child} child disabled={!value} />
+                            <SettingElement setting={child[1]} child disabled={!value} />
                         )
             })
         }
@@ -145,7 +146,7 @@ export default function Preferences(props: any){
             element = <ButtonsSetting setting={props.setting} disabled={props.disabled} updateDisabled={updateValue} />
         }
 
-        
+        console.log('for setting: ', props.setting.name, ' returning element: ', element)
         return(
             <div className="flex flex-col">
                 <div className={`flex flex-row w-full justify-between m-5 ${props.child ? 'pl-10' : ''} ${props.disabled ? 'text-disabled' : ''}`}>
@@ -157,9 +158,10 @@ export default function Preferences(props: any){
         )
     }
 
-    const settingsElements = settings.map((setting: Setting, index: number) => {
+
+    const settingsElements = Object.entries(settings).map((setting: any, index: number) => {
         return(
-            <SettingElement setting={setting} />
+            <SettingElement setting={setting[1]} />
         )
     })
 

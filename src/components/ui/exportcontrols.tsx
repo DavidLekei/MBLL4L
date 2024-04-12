@@ -18,8 +18,6 @@ export default function ExportControls(props: any){
       }
     }
 
-    console.log('filetype : ', fileType)
-
     return(
       <div className="flex flex-row items-center">
         <Button variant="outline" onClick={props.exportFunction}>Export to {fileType}</Button>
