@@ -14,16 +14,16 @@ export default function Benefits(props: any){
                 <p>Export to multiple file types (XML, JSON, etc)</p>
             </div>
             <div className="flex flex-row items-center mt-5">
-                <img src="save-48.png" className="mr-5"></img>
-                <p>Save searches/filters for quick use</p>
-            </div>
-            <div className="flex flex-row items-center mt-5">
                 <img src="cycle-48.png" className="mr-5"></img>
                 <p>Set up automated results emailed to you (daily, weekly, monthly, etc)</p>
             </div>
             <div className="flex flex-row items-center mt-5">
                 <img src="preferences-48.png" className="mr-5"></img>
                 <p>Set user preferences (Light vs Dark mode, Pagination vs Infinite Scroll, etc)</p>
+            </div>
+            <div className="flex flex-row items-center mt-5">
+                <img src="details-48.png" className="mr-5"></img>
+                <p>View detailed information about a Lawyer (complaints, history, etc.)</p>
             </div>
             <div className="flex flex-row items-center mt-5">
                 <img src="code-48.png" className="mr-5"></img>
