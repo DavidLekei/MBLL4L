@@ -3,7 +3,7 @@
 import { AuthContext } from '@/api/auth/auth';
 import { useRouter } from 'next/navigation'
 import {Component, useContext, createContext, useState, useEffect} from 'react'
-import { ThemeContext } from '../theme/theme';
+import {ThemeContext} from "@/components/theme/theme"
 
 type Callback = (...args: any[]) => void
 
@@ -123,6 +123,8 @@ export const SettingsContext = createContext<SettingsContext>({
 export default function SettingsProvider(props: any){
 
     const auth = useContext(AuthContext)
+    const theme = useContext(ThemeContext)
+    console.log('theme in settings.tsx: ', theme)
 
     const [settings, setSettings] = useState<Settings | null>(_settings)
 
@@ -140,15 +142,16 @@ export default function SettingsProvider(props: any){
     }
 
     const useDefaults = () => {
+        console.log('theme: ', theme)
         const defaults = _useDefaults(settings)
         setSettings(defaults)
+        theme.setTheme('Light')
+        console.log('theme2 : ', theme)
     }
 
     //TODO: Add API call to update the setting on the DB as well.
     const updateSetting = (settingName: string, newValue: Boolean | string | number) => {
         const newSettings = {...settings}
-        console.log('newSettings: ', newSettings)
-        console.log('settingName: ', settingName)
         newSettings[settingName].value = newValue
         setSettings(newSettings)    
     }

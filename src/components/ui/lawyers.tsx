@@ -30,6 +30,7 @@ import { AuthContext } from "@/api/auth/auth"
 import SavedSearches from "./savedsearches"
 import ExportTypes from "./exporttypes"
 import ExportControls from "./exportcontrols"
+import { ThemeContext, ThemeProvider } from "../theme/theme"
 
 function getLawyerDataInTable(){
 
@@ -53,6 +54,7 @@ export default function Lawyers(props: any){
     const [searchTerm, setSearchTerm] = useState<string>();
 
     const auth = useContext(AuthContext)
+    const theme = useContext(ThemeContext)
 
     useEffect(
       () => {
@@ -189,7 +191,7 @@ export default function Lawyers(props: any){
     <div className="w-full">
         <div id="button-container" className="flex flex-row justify-between mb-10">
             <div className="flex flex-row">
-                <Input id="search-input" className="col-span-3 rounded-lg" type="text" placeholder="Name, City, Postal Code..." onInput={(e: Event) => {
+                <Input id="search-input" className={`col-span-3 rounded-lg ${(theme.theme == 'Dark') ? 'Dark': 'bg-white'}`} type="text" placeholder="Name, City, Postal Code..." onInput={(e: Event) => {
                     setInput((e.target as HTMLInputElement).value)
                 }}/>
                 <Button className="ml-20 rounded-md hover:bg-primary-hover" id="search-button" onClick={search}>Search</Button>

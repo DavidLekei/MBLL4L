@@ -1,26 +1,21 @@
 import auth, { AuthContext } from "@/api/auth/auth";
 import { Button } from "./button";
 import ExportTypes from "./exporttypes";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { SettingsContext } from "../settings/settings";
+import { ThemeContext } from "../theme/theme";
 
 export default function ExportControls(props: any){
 
     const auth = useContext(AuthContext)
     const settings = useContext(SettingsContext)
+    const theme = useContext(ThemeContext)
 
-    let fileType
-
-    for(var i in settings.settings){
-      if(settings.settings[i].name == 'export_type'){
-        console.log('setting: ', settings.settings[i].name)
-        fileType = settings.settings[i].value
-      }
-    }
+    const [fileType, setFileType] = useState<string>(settings.settings['export_type'].value)
 
     return(
       <div className="flex flex-row items-center">
-        <Button variant="outline" onClick={props.exportFunction}>Export to {fileType}</Button>
+        <Button variant="outline" className={`${theme.theme == 'Dark' ? 'Dark' : ''}`} onClick={props.exportFunction}>Export to {fileType}</Button>
         {auth.user ? <ExportTypes /> : <div></div>}
       </div>
     )

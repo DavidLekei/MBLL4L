@@ -17,8 +17,9 @@ import {
     SelectTrigger,
     SelectValue,
   } from "@/components/ui/select"
-import { useEffect, useState } from "react"
+import { useContext, useEffect, useState } from "react"
 import { useToast } from "./use-toast"
+import { ThemeContext } from "../theme/theme"
 
 const mockData = [
     'Winnipeg',
@@ -29,6 +30,7 @@ const mockData = [
   export default function SavedSearches(props: any){
 
     const {toast} = useToast()
+    const theme = useContext(ThemeContext)
 
     const [selected, setSelected] = useState<string | undefined>()
     const [savedSearches, setSavedSearches] = useState<string[]>([])
@@ -69,10 +71,10 @@ const mockData = [
     return (
         <div className="flex flex-row">
             <Select onValueChange={onSelect} value={selected} key={key}>
-            <SelectTrigger className="w-[180px]">
+            <SelectTrigger className={`w-[180px] ${(theme.theme == 'Dark') ? 'Dark': 'bg-white'}`}>
                 <SelectValue placeholder="Saved searches" />
             </SelectTrigger>
-            <SelectContent className="bg-white">
+            <SelectContent className={`${(theme.theme == 'Dark') ? 'Dark': 'bg-white'}`}>
                 <SelectGroup>
                     {savedSearches.map((searchTerm, index) => {
                             return(

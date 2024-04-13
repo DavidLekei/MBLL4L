@@ -1,20 +1,20 @@
-"use client"
+'use client'
 
-import {useState, createContext, useContext} from "react"
+import {useState, createContext, useContext, useEffect} from "react"
 
 type ThemeContext = {
     theme: string | null;
     setTheme(theme: string): void;
 }
 
-export const ThemeContext = createContext({
+export const ThemeContext = createContext<ThemeContext>({
     theme: null,
-    setTheme: (theme: any) => theme,
+    setTheme: (theme) => theme,
 });
 
-export function ThemeProvider(props: any){
+export default function ThemeProvider(props: any){
 
-    const [theme, setTheme] = useState<string | null>('Light')
+    const [theme, setTheme] = useState<string>('Light')
 
     return(
         <ThemeContext.Provider

@@ -10,11 +10,14 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog"
-import { useState } from "react"
+import { useContext, useState } from "react"
 
 import Benefits from './benefits'
+import { ThemeContext } from "../theme/theme"
 
 export default function About(props: any) {
+
+  const theme = useContext(ThemeContext)
 
   const [open, setOpen] = useState(false)
 
@@ -27,7 +30,7 @@ export default function About(props: any) {
       <DialogTrigger asChild>
         {props.trigger}
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[850px] sm:min-h-[75%] bg-white">
+      <DialogContent className={`sm:max-w-[850px] sm:min-h-[75%] ${theme.theme}`}>
         <DialogHeader>
           <DialogTitle><h1>Manitoba Lawyer Lookup - For Lawyers</h1></DialogTitle>
         </DialogHeader>

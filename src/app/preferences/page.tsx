@@ -29,6 +29,8 @@ export default function Preferences(props: any){
     const router = useRouter()
     const auth = useContext(AuthContext)
     const theme = useContext(ThemeContext)
+    console.log('auth in page.tsx: ', auth)
+    console.log('theme in page.tsx: ', theme)
 
     //If user is not logged in, re-route back to home page (if user manually enters the /preferences route)
     if(!auth.user){
@@ -53,7 +55,12 @@ export default function Preferences(props: any){
 
         const buttons = props.setting.options.map((button: string, index: any) => {
             return(
-                <Button className={`${theme.theme}`} onClick={handleChange} variant={button == selected ? 'default' : 'outline'}>{button}</Button>
+                <Button 
+                    className={`${button == selected ? 'bg-primary' : (theme.theme == 'Dark' ? 'Dark' : 'bg-white')}`} onClick={handleChange}
+                    variant={button == selected ? 'default' : 'outline'}
+                >
+                        {button}
+                </Button>
             )
         })
 
@@ -81,10 +88,10 @@ export default function Preferences(props: any){
 
         return(
             <Select onValueChange={handleChange} disabled={props.disabled}>
-                <SelectTrigger className="w-[180px]">
+                <SelectTrigger className={`w-[180px] ${theme.theme == 'Dark' ? 'Dark':'bg-white'}`}>
                     <SelectValue placeholder={props.setting.value ? props.setting.value : props.setting.default} />
                 </SelectTrigger>
-                <SelectContent className="bg-white">
+                <SelectContent className={`${theme.theme == 'Dark' ? 'Dark':'bg-white'}`}>
                     <SelectGroup>
                     {items}
                     </SelectGroup>
@@ -179,7 +186,7 @@ export default function Preferences(props: any){
                     <div className="flex flex-col items-center">
                         <div className="flex flex-row items-center w-full justify-between pl-5 pb-10">
                             <h1 className="text-4xl font-bold">Preferences</h1>
-                            <Button variant="outline" onClick={resetSettings}>Reset</Button>
+                            <Button variant="outline" className={`${theme.theme == 'Dark' ? 'Dark':'bg-white'}`} onClick={resetSettings}>Reset</Button>
                         </div>
                         <div className="flex flex-col">
                             {settingsElements}
